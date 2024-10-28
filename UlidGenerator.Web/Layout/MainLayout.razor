@@ -1,0 +1,108 @@
+﻿@inherits LayoutComponentBase
+@inject LocalStorageAccessor LocalStorage
+
+<MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudLink Color="Color.Inherit" Href="/">
+            <MudText Typo="Typo.h5" Class="ml-3">ULID Generator</MudText>
+        </MudLink>
+        <MudSpacer />
+        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End">
+            <MudMenuItem Href="/about">About</MudMenuItem>
+            <MudMenuItem Href="/privacy">Privacy</MudMenuItem>
+            <MudMenuItem Href="/author">Author</MudMenuItem>
+        </MudMenu>
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+@code{
+    private bool _isDarkMode;
+    private MudTheme _theme = new MudTheme();
+    private const string DARK_MODE_KEY = "darkMode";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Load dark mode setting from localStorage
+            var darkMode = await LocalStorage.GetValueAsync<bool>(DARK_MODE_KEY);
+            _isDarkMode = darkMode;
+
+            _theme = new()
+            {
+                PaletteLight = _lightPalette,
+                PaletteDark = _darkPalette,
+                LayoutProperties = new LayoutProperties()
+            };
+        }
+        catch
+        {
+            // If there's any error reading from localStorage, default to false
+            _isDarkMode = false;
+            await LocalStorage.SetValueAsync(DARK_MODE_KEY, false);
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task DarkModeToggle()
+    {
+        _isDarkMode = !_isDarkMode;
+        await LocalStorage.SetValueAsync(DARK_MODE_KEY, _isDarkMode);
+        StateHasChanged();
+    }
+
+    private readonly PaletteLight _lightPalette = new()
+    {
+        Black = "#110e2d",
+        AppbarText = "#424242",
+        AppbarBackground = "rgba(255,255,255,0.8)",
+        DrawerBackground = "#ffffff",
+        GrayLight = "#e8e8e8",
+        GrayLighter = "#f9f9f9",
+    };
+
+    private readonly PaletteDark _darkPalette = new()
+    {
+        Primary = "#7e6fff",
+        Surface = "#1e1e2d",
+        Background = "#1a1a27",
+        BackgroundGray = "#151521",
+        AppbarText = "#92929f",
+        AppbarBackground = "rgba(26,26,39,0.8)",
+        DrawerBackground = "#1a1a27",
+        ActionDefault = "#74718e",
+        ActionDisabled = "#9999994d",
+        ActionDisabledBackground = "#605f6d4d",
+        TextPrimary = "#b2b0bf",
+        TextSecondary = "#92929f",
+        TextDisabled = "#ffffff33",
+        DrawerIcon = "#92929f",
+        DrawerText = "#92929f",
+        GrayLight = "#2a2833",
+        GrayLighter = "#1e1e2d",
+        Info = "#4a86ff",
+        Success = "#3dcb6c",
+        Warning = "#ffb545",
+        Error = "#ff3f5f",
+        LinesDefault = "#33323e",
+        TableLines = "#33323e",
+        Divider = "#292838",
+        OverlayLight = "#1e1e2d80",
+    };
+
+    public string DarkLightModeButtonIcon => _isDarkMode switch
+    {
+        true => Icons.Material.Rounded.AutoMode,
+        false => Icons.Material.Outlined.DarkMode,
+    };
+}

@@ -1,0 +1,71 @@
+﻿@page "/privacy"
+
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <MudCard Class="overflow-hidden">
+            <div class="relative h-32 bg-gradient-to-r from-primary to-secondary">
+                <div class="absolute top-1/2 left-8 transform -translate-y-1/2 text-white">
+                    <MudText Color="Color.Inherit" Typo="Typo.h2">Privacy Policy</MudText>
+                </div>
+            </div>
+            
+            <MudCardContent>
+                <div class="space-y-6">
+                    <MudText Typo="Typo.h5" Color="Color.Primary" Class="mt-4">Data Collection and Storage</MudText>
+                    <MudText>
+                        We want to be completely transparent about how this ULID Generator handles your data:
+                    </MudText>
+
+                    <MudList Dense="true" T="string">
+                        <MudListItem Icon="@Icons.Material.Filled.Security">
+                            All ULID generation occurs entirely in your browser
+                        </MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Storage">
+                            Generated ULIDs are not stored, logged, or transmitted to any server
+                        </MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Code">
+                            No user data or generation history is maintained
+                        </MudListItem>
+                    </MudList>
+
+                    <MudDivider Class="my-6"/>
+
+                    <MudText Typo="Typo.h5" Color="Color.Primary">Cookie Usage</MudText>
+                    <MudText>
+                        This site uses only essential cookies necessary for the website to function properly. These include:
+                    </MudText>
+                    <MudList Dense="true" T="string">
+                        <MudListItem Icon="@Icons.Material.Filled.Cookie">Session cookies for maintaining site functionality</MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Cookie">Theme preference cookies (if you change the light/dark mode)</MudListItem>
+                    </MudList>
+
+                    <MudDivider Class="my-6"/>
+
+                    <MudText Typo="Typo.h5" Color="Color.Primary">Analytics</MudText>
+                    <MudText>
+                        We use basic, privacy-respecting analytics to understand site usage patterns. This data is:
+                    </MudText>
+                    <MudList Dense="true" T="string">
+                        <MudListItem Icon="@Icons.Material.Filled.Analytics">Completely anonymized</MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Analytics">Never used for tracking individual users</MudListItem>
+                        <MudListItem Icon="@Icons.Material.Filled.Analytics">Only used to improve site performance and user experience</MudListItem>
+                    </MudList>
+
+                    <MudDivider Class="my-6"/>
+
+                    <MudText Typo="Typo.h5" Color="Color.Primary">Contact Information</MudText>
+                    <MudText>
+                        If you have any questions about this privacy policy or our practices, please contact us at:
+                    </MudText>
+                    <MudText Class="mt-2">
+                        Email: privacy@yourdomain.com
+                    </MudText>
+
+                    <MudText Typo="Typo.body2" Class="mt-8 text-gray-600">
+                        Last updated: @DateTime.Now.ToString("MMMM dd, yyyy")
+                    </MudText>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </div>
+</div>

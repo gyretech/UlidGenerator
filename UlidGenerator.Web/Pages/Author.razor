@@ -1,0 +1,87 @@
+﻿@page "/author"
+
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <MudCard Class="overflow-hidden">
+            <div class="relative h-48 bg-gradient-to-r from-primary to-secondary">
+                <div class="absolute -bottom-16 left-8">
+                    <MudAvatar Color="Color.Primary" Class="h-32 w-32 ring-4 ring-white shadow-lg">KW</MudAvatar>
+                </div>
+            </div>
+            
+            <MudCardContent Class="pt-20">
+                <div class="space-y-6">
+                    <div>
+                        <MudText Typo="Typo.h3" Class="font-bold">Keshwar White</MudText>
+                        <MudText Typo="Typo.h5" Color="Color.Primary">Senior Software Architect & Infrastructure Specialist</MudText>
+                    </div>
+
+                    <MudText>
+                        With over 15 years of experience in software development and infrastructure architecture, 
+                        I specialize in building scalable, enterprise-level applications using .NET technologies. 
+                        My expertise spans cloud-native architectures, distributed systems, and enterprise modernization.
+                        I've successfully led teams of 20+ developers and delivered mission-critical solutions for Fortune 500 companies,
+                        resulting in significant operational efficiency improvements and cost savings.
+                    </MudText>
+
+                    <MudPaper Class="p-6" Elevation="0">
+                        <MudText Typo="Typo.h6" Class="mb-4">Core Expertise</MudText>
+                        <div class="flex flex-wrap gap-2">
+                            <MudChip T="string" Color="Color.Primary">C# Development</MudChip>
+                            <MudChip T="string" Color="Color.Primary">.NET Core/.NET 6+</MudChip>
+                            <MudChip T="string" Color="Color.Primary">Azure Cloud</MudChip>
+                            <MudChip T="string" Color="Color.Primary">Microservices</MudChip>
+                            <MudChip T="string" Color="Color.Primary">DevOps</MudChip>
+                            <MudChip T="string" Color="Color.Primary">System Architecture</MudChip>
+                            <MudChip T="string" Color="Color.Primary">Event-Driven Architecture</MudChip>
+                            <MudChip T="string" Color="Color.Primary">Domain-Driven Design</MudChip>
+                            <MudChip T="string" Color="Color.Primary">CI/CD</MudChip>
+                            <MudChip T="string" Color="Color.Primary">Kubernetes</MudChip>
+                        </div>
+                    </MudPaper>
+
+                    <MudPaper Class="p-6" Elevation="0">
+                        <MudText Typo="Typo.h6" Class="mb-4">Key Achievements</MudText>
+                        <MudList T="string">
+                            <MudListItem T="string" Icon="@Icons.Material.Filled.Star">
+                                Led digital transformation initiatives resulting in 40% reduction in deployment time
+                            </MudListItem>
+                            <MudListItem T="string" Icon="@Icons.Material.Filled.Star">
+                                Architected cloud-native solutions handling 1M+ daily transactions
+                            </MudListItem>
+                            <MudListItem T="string" Icon="@Icons.Material.Filled.Star">
+                                Published technical articles reaching 50K+ developers monthly
+                            </MudListItem>
+                        </MudList>
+                    </MudPaper>
+
+                    <MudPaper Class="p-6" Elevation="0">
+                        <MudText Typo="Typo.h6" Class="mb-4">Certifications</MudText>
+                        <div class="flex flex-wrap gap-2">
+                            <MudChip T="string" Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Success">Azure Solutions Architect Expert</MudChip>
+                            <MudChip T="string" Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Success">AWS Solutions Architect Associate</MudChip>
+                            <MudChip T="string" Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Success">Certified Kubernetes Administrator</MudChip>
+                        </div>
+                    </MudPaper>
+
+                    <div class="flex space-x-4 mt-8">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" 
+                                 StartIcon="@Icons.Custom.Brands.GitHub" 
+                                 Href="https://github.com/gyretech" Target="_blank">
+                            GitHub
+                        </MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" 
+                                 StartIcon="@Icons.Custom.Brands.LinkedIn" 
+                                 Href="https://linkedin.com/in/keshwar-white" Target="_blank">
+                            LinkedIn
+                        </MudButton>
+                    </div>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </div>
+</div>
+
+@code{
+    private MudTheme Theme = new MudTheme();
+}

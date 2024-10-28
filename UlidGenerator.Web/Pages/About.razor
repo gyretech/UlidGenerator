@@ -1,0 +1,131 @@
+﻿@page "/about"
+
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+        <MudCard Class="overflow-hidden">
+            <div class="relative h-32 bg-gradient-to-r from-primary to-secondary">
+                <div class="absolute top-1/2 left-8 transform -translate-y-1/2 text-white">
+                    <MudText Color="Color.Inherit" Typo="Typo.h2">About ULIDs</MudText>
+                </div>
+            </div>
+            <MudCardContent>
+                <div class="space-y-6">
+                    <MudPaper Class="p-6" Elevation="0">
+                        <MudText Typo="Typo.h6" Class="mb-4">Why I Built This ULID Generator</MudText>
+                        <MudText Class="mb-4">
+                            As an experienced architect working on distributed systems, I encountered a significant challenge: 
+                            the need for truly unique, sortable identifiers that could work reliably across multiple services 
+                            and databases. While AI tools and various UUID generators exist, they often fall short in 
+                            generating genuine ULIDs that maintain true uniqueness and proper lexicographical sorting.
+                        </MudText>
+                    </MudPaper>
+
+                    <MudPaper Class="p-6" Elevation="0">
+                        <MudText Typo="Typo.h6" Class="mb-4">Technical Implementation</MudText>
+                        <MudText Class="mb-4">
+                            Unlike simplified ULID generators or AI approximations, this tool implements the complete ULID 
+                            specification, ensuring proper handling of:
+                        </MudText>
+                        <MudList T="string" Dense="true">
+                            <MudListItem Icon="@Icons.Material.Filled.Code">48-bit millisecond timestamps</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Code">80-bit random component with proper entropy</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Code">Crockford's Base32 encoding for optimal readability</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Code">Monotonicity guarantees within the same millisecond</MudListItem>
+                        </MudList>
+                    </MudPaper>
+
+                    <MudPaper Class="p-6" Elevation="0">
+                        <MudText Typo="Typo.h6" Class="mb-4">Advantages of ULIDs</MudText>
+                        <MudList T="string" Dense="true">
+                            <MudListItem Icon="@Icons.Material.Filled.Add">Time-based sorting capability</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Add">128-bit compatibility with UUID systems</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Add">Case-insensitive</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Add">URL-safe characters</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Add">Monotonically sortable (within the same millisecond)</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Add">No special characters (unlike UUID hyphens)</MudListItem>
+                        </MudList>
+                    </MudPaper>
+
+                    <MudPaper Class="p-6" Elevation="0">
+                        <MudText Typo="Typo.h6" Class="mb-4">Limitations and Considerations</MudText>
+                        <MudList T="string" Dense="true">
+                            <MudListItem Icon="@Icons.Material.Filled.Remove">Longer string representation than UUID</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Remove">Less widely supported in databases compared to UUIDs</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Remove">Time component may reveal creation patterns</MudListItem>
+                            <MudListItem Icon="@Icons.Material.Filled.Remove">Requires proper monotonicity handling in high-throughput scenarios</MudListItem>
+                        </MudList>
+                    </MudPaper>
+
+                    <MudPaper Class="p-6" Elevation="0">
+                        <MudText Typo="Typo.h6" Class="mb-4">Usage Examples</MudText>
+                        <MudText Class="mb-4">
+                            ULIDs are particularly useful in modern application development, especially when seeding data or working with distributed systems. Here are some practical examples:
+                        </MudText>
+
+                        <MudText Typo="Typo.subtitle1" Class="mt-4 mb-2">SQL Seeding Example</MudText>
+                        <MudText Class="mb-2">Direct SQL seeding with ULIDs:</MudText>
+                        <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto">
+INSERT INTO Products (Id, Name, Category)
+VALUES 
+('01HQ8KXCA3YR8RHXN8V8D3YQNM', 'Product A', 'Electronics'),
+('01HQ8KXCA4NB6QGXP9W9E4ZROM', 'Product B', 'Electronics'),
+('01HQ8KXCA5PC7RHYQ0X0F5ASPN', 'Product C', 'Accessories');</pre>
+
+                        <MudText Typo="Typo.subtitle1" Class="mt-6 mb-2">Entity Framework Configuration</MudText>
+                        <MudText Class="mb-2">Using ULIDs in Entity Framework HasData configuration:</MudText>
+                        <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto">
+public class ProductConfiguration : IEntityTypeConfiguration&lt;Product&gt;
+{
+    public void Configure(EntityTypeBuilder&lt;Product&gt; builder)
+    {
+        builder.HasKey(p => p.Id);
+        builder.Property(p => p.Id)
+               .HasMaxLength(26)
+               .IsFixedLength();
+
+        builder.HasData(
+            new Product 
+            { 
+                Id = "01HQ8KXCA3YR8RHXN8V8D3YQNM",
+                Name = "Product A",
+                Category = "Electronics"
+            },
+            new Product 
+            { 
+                Id = "01HQ8KXCA4NB6QGXP9W9E4ZROM",
+                Name = "Product B",
+                Category = "Electronics"
+            }
+        );
+    }
+}</pre>
+
+                        <MudText Typo="Typo.subtitle1" Class="mt-6 mb-2">Domain Entity Example</MudText>
+                        <MudText Class="mb-2">Implementing ULIDs in a DDD entity:</MudText>
+                        <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto">
+public class Product : IAggregateRoot
+{
+    public string Id { get; private set; }
+    public string Name { get; private set; }
+    public string Category { get; private set; }
+
+    public static Product Create(string name, string category)
+    {
+        return new Product
+        {
+            Id = Ulid.NewUlid().ToString(),
+            Name = name,
+            Category = category
+        };
+    }
+}</pre>
+                    </MudPaper>
+                </div>
+            </MudCardContent>
+        </MudCard>
+    </div>
+</div>
+
+@code{
+    private MudTheme Theme = new MudTheme();
+}

@@ -1,0 +1,141 @@
+﻿@page "/"
+@using System.Text
+@using System.Timers
+
+<PageTitle>ULID Generator</PageTitle>
+
+<div class="overflow-hidden flex flex-col items-center justify-start pt-44 bg-surface">
+    <div class="text-center mb-12">
+        <MudText Typo="Typo.h3" Color="Color.Primary" Class="font-extrabold mb-2">
+            ULID Generator
+            <MudChip T="string" Size="Size.Small" Color="Color.Primary" Class="font-mono align-top">
+                v1.0
+            </MudChip>
+        </MudText>
+        <MudText Typo="Typo.body1" Color="Color.Secondary">
+            Fast, secure identifier generation for modern applications
+        </MudText>
+    </div>
+    
+    <div class="mb-8">
+        <svg class="h-16 w-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="2" class="text-primary"/>
+            <path d="M6 10h2m3 0h2m3 0h2" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="text-primary"/>
+            <path d="M7 14h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="text-primary"/>
+        </svg>
+    </div>
+    
+    <div class="flex items-center gap-4 mb-8">
+        <MudNumericField 
+            @bind-Value="_numberOfUlids"
+            Immediate="true"
+            Min="1"
+            Max="1000"
+            Label="Number of ULIDs"
+            Variant="Variant.Outlined"
+            Margin="Margin.Dense"
+            Class="w-60" />
+        
+        <MudButton 
+            Disabled="@_isGenerating"
+            Variant="Variant.Filled" 
+            Color="Color.Primary"
+            OnClick="GenerateUlids"
+            StartIcon="@Icons.Material.Filled.AutoAwesome">
+            @if (_isGenerating)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2">Generating</MudText>
+            }
+            else
+            {
+                <MudText>Generate</MudText>
+            }
+        </MudButton>
+    </div>
+
+    <div class="flex flex-col gap-4 w-full max-w-2xl">
+        <MudPaper MaxHeight="300px" Class="w-full p-4 overflow-y-auto" Outlined="true" Elevation="3">
+            <MudText Typo="Typo.body2" Color="Color.Success" Class="font-mono whitespace-pre-wrap">
+                @(_output ?? "Output will appear here...")
+            </MudText>
+        </MudPaper> 
+    </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 py-4 bg-surface">
+        <div class="flex justify-center gap-6">
+            <MudLink Href="/about" Color="Color.Primary" Underline="Underline.None" 
+                     Class="hover:text-primary/80 transition-colors">
+                About
+            </MudLink>            
+            <MudLink Href="/privacy" Color="Color.Primary" Underline="Underline.None" 
+                     Class="hover:text-primary/80 transition-colors">
+                Privacy
+            </MudLink>
+            <MudLink Href="/author" Color="Color.Primary" Underline="Underline.None"
+                     Class="hover:text-primary/80 transition-colors">
+                Author
+            </MudLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool _isGenerating = false;
+    private int _numberOfUlids = 1;
+    private string? _output;
+    private Timer? _timer;
+    private Queue<char>? _charactersToType;
+    private StringBuilder _currentOutput = new();
+    private bool _isReadyToDownload = false;
+
+    private void GenerateUlids()
+    {
+        _isGenerating = true;
+
+        // Reset previous output
+        _output = null;
+        _currentOutput.Clear();
+        
+
+        // Generate all ULIDs first
+        var ulids = Enumerable.Range(0, _numberOfUlids)
+            .Select(_ => Ulid.NewUlid().ToString())
+            .ToList();
+
+        _isReadyToDownload = ulids.Count == _numberOfUlids;
+
+        // Create queue of characters to type (including newlines)
+        _charactersToType = new Queue<char>(
+            string.Join(Environment.NewLine, ulids)
+                 .ToCharArray()
+        );
+
+        // Setup and start timer for typing animation
+        _timer?.Dispose();
+        _timer = new Timer(20); // 20ms between characters
+        _timer.Elapsed += TypeNextCharacter;
+        _timer.Start();
+    }
+
+    private void TypeNextCharacter(object? sender, ElapsedEventArgs e)
+    {
+        if (_charactersToType?.Count > 0)
+        {
+            _currentOutput.Append(_charactersToType.Dequeue());
+            _output = _currentOutput.ToString();
+            StateHasChanged();
+        }
+        else
+        {
+            _timer?.Stop();
+            _isGenerating = false;
+            StateHasChanged();
+        }
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+}
