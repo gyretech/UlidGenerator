@@ -10,7 +10,7 @@ public sealed class LocalStorageAccessor(IJSRuntime jSRuntime) : IAsyncDisposabl
     {
         if(_accessorJsRef.IsValueCreated is false)
         {
-            _accessorJsRef = new(await jSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/localStorageAccessor.js"));
+            _accessorJsRef = new(await jSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/storage.js"));
         }
     }
 
